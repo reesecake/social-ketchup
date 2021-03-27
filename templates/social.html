@@ -16,10 +16,33 @@
     <script type="text/javascript">
       var socket = io.connect('http://' + document.domain + ':' + location.port);
       socket.on( 'connect', function() {
-       socket.emit( 'my event', {
-         data: 'User Connected'
+       socket.emit( 'pair me', {
+         'username': 'Satya'
        } )
      } )
+
+     socket.on('message', (message)=>{
+       //display message on screen
+       console.log(message)
+     })
+
+
+     socket.on('introduction',(data)=>{
+       //compare with self and render partner name
+       console.log(data)
+     })
+
+     
+
+    /*
+    
+
+    
+    */
     </script>
+
+
+<h1> Soial Ketchup Chat</h1>
+
 
 </html>
