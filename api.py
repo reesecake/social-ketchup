@@ -12,7 +12,7 @@ login = LoginManager(app)
 dbmongo = MongoEngine(app)
 bootstrap = Bootstrap(app)
 
-from flask_socketio import SocketIO, join_room, leave_room, send, emit, rooms
+from flask_socketio import SocketIO, join_room, leave_room, send, emit, rooms, close_room
 socketio = SocketIO(app)
 from collections import deque
 import uuid
@@ -27,7 +27,8 @@ app.register_blueprint(authenticationController)
 queue = deque([])
 
 
-    
+## Same user enqueued problem -- email matching? 
+## Next functionality
 
 
 @app.route("/chat")
@@ -46,8 +47,6 @@ def message(data, methods=['GET', 'POST']):
 @socketio.on('pair me')
 def pairIfPossible(data, methods=['GET', 'POST']):
     #data = json.loads(data)
-    default_room = rooms()[0]
-    leave_room(default_room)
     if queue:
         #we found a match
         waiting_user, room_id = queue.popleft()
@@ -69,14 +68,12 @@ def disconnect_details(data):
     print(data)
     room_id = data['room']
     emit('partner disconnected', room=room_id, include_self=False)
+    close_room(room_id)
 
 
 @socketio.on('disconnect')
 def test_disconnect():
-    room_id = rooms(sid=None)[0]
-    room = rooms(sid=None)
-    print(room)
-    print("Client is disconnecting!")
+    print("Client has disconnected!")
 
 
 

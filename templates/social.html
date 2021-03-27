@@ -15,9 +15,9 @@
   <ul id="chat-log"></ul>
     <form action="" id="message-form">
       <span>
-      <button id="nextBtn" type="button">Next</button>
+      <button id="nextBtn" type="button" style="cursor: pointer;">Next</button>
       <input id="message" autocomplete="off" type="text" placeholder="Type message to send"/>
-      <button id="sendBtn" type="submit">Send</button>
+      <button id="sendBtn" type="submit" style="cursor: pointer;">Send</button>
       </span>
     </form>
 
@@ -58,10 +58,26 @@ $(function() {
   var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 
+  function conectToNewChat(){
+    document.getElementById('chat-log').innerHTML = ''
+    socket.emit('pair me', {'username': 'Raj'})
+  }
+
   function addMessage(self, message){
     if (self =='you') $('#chat-log').append($('<li>').text( you + $('#message').val()));
     if (self == 'stranger') $('#chat-log').append($('<li>').text( stranger + message));
     if (self == 'server') $('#chat-log').append($('<li>').text( message));
+  }
+
+
+  function showNewChatButton(){
+    var btn = document.createElement("BUTTON");
+    btn.innerHTML = 'Start New Chat'
+    btn.style = "cursor: pointer;"
+    chats.appendChild(btn)
+    btn.addEventListener('click', (e)=>{
+      conectToNewChat()
+    })
   }
 
   /* Send button click event */
@@ -82,10 +98,9 @@ $(function() {
 
 
   /* Next button click event */
-  next.addEventListener('click', ()=>{
+  next.addEventListener('click', (e)=>{
     e.preventDefault()
-    
-    //TODO: Disconnect and Queue up or get paired to another user
+    conectToNewChat()
 
   })
 
@@ -111,6 +126,7 @@ $(function() {
    socket.on('introduction',(data)=>{
      //TODO: compare with self and render partner name
      console.log(data)
+     addMessage('server', "Connected to a New Partner!!")
      curr_room = data['room_id']
      console.log(curr_room)
    })
@@ -119,6 +135,7 @@ $(function() {
    /* Partner Disconnected Event */
    socket.on('partner disconnected', ()=>{
     addMessage('server', "Stranger has disconnected. You can connect with a new partner!")
+    showNewChatButton()
     //TODO: button to start new chat
    })
 
