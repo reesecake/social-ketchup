@@ -17,13 +17,14 @@
   
 
   <div class = "container">
+    
     <div class = "leftpane"></div>
         <div class="middlepane">
           <div id="chat-log"></div>
           <form action="" id="message-form">
             <span>
             <button id="nextBtn" type="button" style="cursor: pointer;">Next</button>
-            <input class = 'inputbox'id="message" autocomplete="off" type="text" placeholder=" Type here..."/>
+            <span id='input-span'><input class = 'inputbox' id="message" autocomplete="off" type="text" placeholder="Type here..." required/></span>
             <button id="sendBtn" type="submit" style="cursor: pointer;">Send</button>
             </span>
           </form>
@@ -35,13 +36,7 @@
 
 <script type="text/javascript">
 
-// window.addEventListener('beforeunload', (event) => {
-//     //if (!hideWarning) {
-//         event.preventDefault();
-//         event.returnValue = '';
-//     //}
-
-// });
+//Bugs -- Empty message -- No scroll -- No autoscroll
 
 $(function() {
     $(window).bind('beforeunload', function() {
@@ -74,7 +69,7 @@ $(function() {
 
   function addMessage(self, message){
     if (self =='you') $('#chat-log').append($('<li>').text( you + $('#message').val()));
-    if (self == 'stranger') $('#chat-log').append($('<li>').text( stranger + message));
+    if (self == 'stranger') $('#chat-log').append($('<li>').text( stranger+ message));
     if (self == 'server') $('#chat-log').append($('<li>').text( message));
   }
 
@@ -92,8 +87,8 @@ $(function() {
   /* Send button click event */
   send.addEventListener('click',(e)=>{
     e.preventDefault()
-    send.setAttribute('disabled','disabled')
     message = document.getElementById('message').value
+    send.setAttribute('disabled','disabled')
     addMessage('you', message)
     const payload = {'room':curr_room, 'message':message}
     console.log(payload)

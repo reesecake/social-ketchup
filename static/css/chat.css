@@ -44,12 +44,68 @@ body, html {
     background-color: #f3ec89;
   }
 
-  .inputbox
+
+  .chat-area{
+      width: 100%;
+      height:100%;
+  }
+  span
     {
     position:absolute; 
     bottom:0;
     float:left;
-    width: 50%;
-    height: 40px;
+    width: 60%;
+    height: 5%;
     font-size: 15px;
+    padding: 0 0 0 0;
     }
+
+
+#chat-log{
+    height: 95%;
+    width: fit-content;
+    padding: 1rem;
+    overflow: auto
+}
+
+#sendBtn{
+    float: right;
+    width: 10%;
+    margin: 0;
+    height: 100%;
+    /* font-size: 1.1rem; */
+}
+
+
+#nextBtn{
+    float: left;
+    width: 10%;
+    margin: 0;
+    height: 100%;
+    /* font-size: 1.1rem; */
+}
+
+#input-span{
+    width:80%;
+    height: 100%;
+}
+
+input{
+    width:100%;
+    height: 100%;
+    font-size: 15px;
+}
+
+
+ul{  
+    list-style-type: none;
+}
+
+li {
+
+    list-style-type: none;
+    padding-left: 2em;
+    text-indent: -2em;
+    margin: 1rem;
+    font-size: 1.2rem;
+}
