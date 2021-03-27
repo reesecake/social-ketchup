@@ -1,0 +1,111 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  
+  .container {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .leftpane {
+      width: 20%;
+      height: 100%;
+      float: left;
+      background-color: rosybrown;
+      border-collapse: collapse;
+      border-color: black;
+  }
+  
+  .middlepane {
+      width: 60%;
+      height: 100%;
+      float: left;
+      background-color: #e0e0e0;
+      border-collapse: collapse;
+      border-color: black;
+  }
+  
+  .rightpane {
+    width: 20%;
+    height: 100%;
+    position: relative;
+    float: right;
+    background-color: rgb(238, 211, 160);
+    border-collapse: collapse;
+    border-color: black;
+  }
+  
+  .toppane {
+    width: 100%;
+    height: 100px;
+    border-collapse: collapse;
+    background-color: #f3ec89;
+  }
+
+
+  .chat-area{
+      width: 100%;
+      height:100%;
+  }
+  span
+    {
+    position:absolute; 
+    bottom:0;
+    float:left;
+    width: 60%;
+    height: 5%;
+    font-size: 15px;
+    padding: 0 0 0 0;
+    }
+
+
+#chat-log{
+    height: 95%;
+    width: fit-content;
+    padding: 1rem;
+    overflow: auto
+}
+
+#sendBtn{
+    float: right;
+    width: 10%;
+    margin: 0;
+    height: 100%;
+    /* font-size: 1.1rem; */
+}
+
+
+#nextBtn{
+    float: left;
+    width: 10%;
+    margin: 0;
+    height: 100%;
+    /* font-size: 1.1rem; */
+}
+
+#input-span{
+    width:80%;
+    height: 100%;
+}
+
+input{
+    width:100%;
+    height: 100%;
+    font-size: 15px;
+}
+
+
+ul{  
+    list-style-type: none;
+}
+
+li {
+
+    list-style-type: none;
+    padding-left: 2em;
+    text-indent: -2em;
+    margin: 1rem;
+    font-size: 1.2rem;
+}
