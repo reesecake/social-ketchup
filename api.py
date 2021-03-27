@@ -1,15 +1,25 @@
-from flask import Flask, render_template
-# from blueprints.authentication import authenticationController
+from flask import Flask
+from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_socketio import SocketIO
-# from flask_cors import CORS
 
+from flask_mongoengine import MongoEngine
+
+from config import Config
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-# app.register_blueprint(authenticationController)
-# socketio = SocketIO(app)
+app.config.from_object(Config)
 socketio = SocketIO(app)
-# cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
+login = LoginManager(app)
+dbmongo = MongoEngine(app)
+bootstrap = Bootstrap(app)
+
+from app import routes
+from blueprints.authentication import authenticationController
+import models
+
+app.register_blueprint(authenticationController)
 
 @app.route("/chat")
 def render_chat():
@@ -21,3 +31,4 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
+

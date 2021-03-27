@@ -1,0 +1,26 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.Site-footer {
+    flex-shrink: 0;
+
+    padding: 20px;
+}
+
+.footer-title {
+    color: white;
+    text-align: center;
+}
+
+.Site-content {
+    flex: 1 0 auto;
+
+    align-self: center;
+    background-color: white;
+    /*background-size: cover;*/
+    margin: 10px;
+    padding: 10px 100px 50px;
+}
