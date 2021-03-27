@@ -5,15 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
-</head>
-
-<body>
-
-</body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
     <script type="text/javascript">
+
+    var room = null
       var socket = io.connect('http://' + document.domain + ':' + location.port);
       socket.on( 'connect', function() {
        socket.emit( 'pair me', {
@@ -23,15 +19,25 @@
 
      socket.on('message', (message)=>{
        //display message on screen
-       console.log(message)
+       console.log("received message:", message)
      })
 
 
      socket.on('introduction',(data)=>{
        //compare with self and render partner name
        console.log(data)
+       room = data['room_id']
+       console.log(room)
      })
 
+     function sendMessage(){
+      chats = document.getElementById('chat')
+      message = document.getElementById('message').value
+      const payload = {'room':room, 'message':message}
+      console.log(payload)
+      socket.emit('message', payload)
+      console.log("Message sent: ", message)
+     }
      
 
     /*
@@ -41,6 +47,17 @@
     */
     </script>
 
+
+</head>
+
+<body>
+
+<div id="chat"></div>
+<input type="text" placeholder="enter message here" id="message"/> 
+<button type="submit" onclick="sendMessage()"></button>
+
+</body>
+    
 
 <h1> Soial Ketchup Chat</h1>
 
