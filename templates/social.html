@@ -4,62 +4,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Social Ketchup</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
-    <script type="text/javascript">
-
-    var room = null
-      var socket = io.connect('http://' + document.domain + ':' + location.port);
-      socket.on( 'connect', function() {
-       socket.emit( 'pair me', {
-         'username': 'Satya'
-       } )
-     } )
-
-     socket.on('message', (message)=>{
-       //display message on screen
-       console.log("received message:", message)
-     })
-
-
-     socket.on('introduction',(data)=>{
-       //compare with self and render partner name
-       console.log(data)
-       room = data['room_id']
-       console.log(room)
-     })
-
-     function sendMessage(){
-      chats = document.getElementById('chat')
-      message = document.getElementById('message').value
-      const payload = {'room':room, 'message':message}
-      console.log(payload)
-      socket.emit('message', payload)
-      console.log("Message sent: ", message)
-     }
-     
-
-    /*
-    
-
-    
-    */
-    </script>
-
-
 </head>
 
 <body>
+  <h1> Soial Ketchup Chat</h1>
 
-<div id="chat"></div>
-<input type="text" placeholder="enter message here" id="message"/> 
-<button type="submit" onclick="sendMessage()"></button>
+  <ul id="chat-log"></ul>
+    <form action="" id="message-form">
+      <span>
+      <button id="nextBtn" type="button">Next</button>
+      <input id="message" autocomplete="off" type="text" placeholder="Type message to send"/>
+      <button id="sendBtn" type="submit">Send</button>
+      </span>
+    </form>
+
 
 </body>
-    
 
-<h1> Soial Ketchup Chat</h1>
+<script type="text/javascript">
+
+// window.addEventListener('beforeunload', (event) => {
+//     //if (!hideWarning) {
+//         event.preventDefault();
+//         event.returnValue = '';
+//     //}
+
+// });
+
+$(function() {
+    $(window).bind('beforeunload', function() {
+        setTimeout(function() {
+            setTimeout(function() {
+            }, 1000);
+        },1);
+        return 'are you sure';
+    });
+}); 
+
+
+  const you = "You: "
+  const stranger = "Stranger: "
+
+  var form = document.getElementById("message-form");
+  const send = document.getElementById('sendBtn')
+  const text = document.getElementById('message')
+  const chats = document.getElementById('chat-log')
+  const next = document.getElementById('nextBtn')
+  var curr_room = null
+  text.focus()
+  var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+
+  function addMessage(self, message){
+    if (self =='you') $('#chat-log').append($('<li>').text( you + $('#message').val()));
+    if (self == 'stranger') $('#chat-log').append($('<li>').text( stranger + message));
+    if (self == 'server') $('#chat-log').append($('<li>').text( message));
+  }
+
+  /* Send button click event */
+  send.addEventListener('click',(e)=>{
+    e.preventDefault()
+    send.setAttribute('disabled','disabled')
+    message = document.getElementById('message').value
+    addMessage('you', message)
+    const payload = {'room':curr_room, 'message':message}
+    console.log(payload)
+    socket.emit('message', payload, ()=>{
+        send.removeAttribute('disabled')
+        text.value = ''
+        text.focus()
+    })
+    console.log("Message sent: ", message)
+  })
+
+
+  /* Next button click event */
+  next.addEventListener('click', ()=>{
+    e.preventDefault()
+    
+    //TODO: Disconnect and Queue up or get paired to another user
+
+  })
+
+
+
+  /* Send socket connection is made */
+   socket.on( 'connect', function() {
+     socket.emit( 'pair me', {'username': 'Satya'})
+   })
+
+
+
+   /* When 'message' arrives */
+   socket.on('message', (message)=>{
+    addMessage('stranger', message)
+     console.log("received message:", message)
+   })
+
+
+
+
+   /* 'introduction' when paired with new user */
+   socket.on('introduction',(data)=>{
+     //TODO: compare with self and render partner name
+     console.log(data)
+     curr_room = data['room_id']
+     console.log(curr_room)
+   })
+
+  
+   /* Partner Disconnected Event */
+   socket.on('partner disconnected', ()=>{
+    addMessage('server', "Stranger has disconnected. You can connect with a new partner!")
+    //TODO: button to start new chat
+   })
+
+  /*
+  
+
+  
+  */
+      window.onbeforeunload = function () {
+      socket.emit('client disconnecting', {'room':curr_room});
+    }
+  </script>
+
+
 
 
 </html>
