@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, url_for, render_template, flash
-from flask_login import current_user
+from flask_login import current_user, logout_user, login_user
 
-from app.forms import RegistrationForm
+from app.forms import RegistrationForm, LoginForm
 from models import User
 
 authenticationController = Blueprint("authentication", __name__)
@@ -26,3 +26,34 @@ def signup():
         return redirect(url_for('index'))
 
     return render_template('registration.html', form=form)
+
+
+@authenticationController.route('/login', methods=['GET', 'POST'])
+def login():
+    """
+    Gives an anonymous user the login form and checks their credentials against users in the database.
+    """
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.objects(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password')
+            return redirect(url_for('login'))
+
+        login_user(user, remember=form.remember_me.data)
+        return redirect(url_for('index'))
+
+    return render_template('login.html', form=form)
+
+
+@authenticationController.route('/logout')
+def logout():
+    """
+    Logs the current_user out and redirects them to index.
+    """
+    logout_user()
+    return redirect(url_for('index'))

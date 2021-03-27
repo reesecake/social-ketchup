@@ -1,20 +1,21 @@
 from hashlib import md5
 
+from bson import ObjectId
 from flask_login import UserMixin
 from mongoengine import Document, StringField
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from api import login, dbmongo
+from api import login
 
 
 @login.user_loader
 def load_user(id_):
-    return dbmongo
+    return User.objects(id=ObjectId(id_)).first()
 
 
-class User(Document):
+class User(UserMixin, Document):
 
-    # id = IntegerField(dbmongo.Integer, primary_key=True)
+    id = StringField(primary_key=True)
     username = StringField(max_length=64, unique=True)
     email = StringField(max_length=120, unique=True)
     password_hash = StringField(max_length=128)
@@ -24,7 +25,7 @@ class User(Document):
 
     def serialize(self):
         return {
-            # 'id': self.id,
+            'id': self.id,
             'username': self.username,
             'email': self.email,
             'password_hash': 'private!'
