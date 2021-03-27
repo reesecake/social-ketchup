@@ -1,19 +1,19 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
-from flask_socketio import SocketIO
-
 from flask_mongoengine import MongoEngine
 
 from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
-socketio = SocketIO(app)
 
 login = LoginManager(app)
 dbmongo = MongoEngine(app)
 bootstrap = Bootstrap(app)
+
+from flask_socketio import SocketIO
+socketio = SocketIO(app)
 
 from app import routes
 from blueprints.authentication import authenticationController
@@ -31,4 +31,3 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
-
