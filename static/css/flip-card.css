@@ -1,0 +1,44 @@
+.flip-card-container {
+    width: 300px;
+    height: 400px;
+    perspective: 1000px;
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 15px; /* 15px rounded corners */
+}
+
+.flip-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+}
+
+.flip-card-container.flip .flip-card {
+    transform: translateX(-300px);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flip-card-front {
+    background-color: #333;
+    color: #fff;
+}
+
+.flip-card-back {
+    background-color: #517fa4;
+    color: #fff;
+    transform: translateX(300px);
+}
