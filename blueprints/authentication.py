@@ -4,7 +4,7 @@ from flask_login import current_user, logout_user, login_user
 from app.forms import RegistrationForm, LoginForm
 from models import User
 
-authenticationController = Blueprint("authentication", __name__)
+authenticationController = Blueprint("authenticationController", __name__)
 
 
 @authenticationController.route("/signup", methods=['GET', 'POST'])
