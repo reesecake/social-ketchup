@@ -1,0 +1,55 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  
+  .container {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .leftpane {
+      width: 20%;
+      height: 100%;
+      float: left;
+      background-color: rosybrown;
+      border-collapse: collapse;
+      border-color: black;
+  }
+  
+  .middlepane {
+      width: 60%;
+      height: 100%;
+      float: left;
+      background-color: #e0e0e0;
+      border-collapse: collapse;
+      border-color: black;
+  }
+  
+  .rightpane {
+    width: 20%;
+    height: 100%;
+    position: relative;
+    float: right;
+    background-color: rgb(238, 211, 160);
+    border-collapse: collapse;
+    border-color: black;
+  }
+  
+  .toppane {
+    width: 100%;
+    height: 100px;
+    border-collapse: collapse;
+    background-color: #f3ec89;
+  }
+
+  .inputbox
+    {
+    position:absolute; 
+    bottom:0;
+    float:left;
+    width: 50%;
+    height: 40px;
+    font-size: 15px;
+    }
