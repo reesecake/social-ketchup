@@ -83,7 +83,7 @@ $(function() {
 
     if (self =='you') $('#chat-log').append($('<li>').text( you + $('#message').val()));
     if (self == 'stranger') $('#chat-log').append($('<li>').text( stranger + message));
-    if (self == 'server') $('#chat-log').append($('<li>').text( message));
+    if (self == 'server') $('#chat-log').append($('<li>').text( "***" + message + "***"));
     var objDiv = document.getElementById("chat-log");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
@@ -153,7 +153,10 @@ $(function() {
    socket.on('introduction',(data)=>{
      //TODO: compare with self and render partner name
      console.log(data)
-     addMessage('server', "Connected to a New Partner!!")
+     p1 = data['p1']
+     p2 = data['p2']
+     partner = username == p1? p2 : p1
+     addMessage('server', "Connected to " + partner + "!! Say Hello!")
      curr_room = data['room_id']
      console.log(curr_room)
    })
@@ -163,14 +166,19 @@ $(function() {
    socket.on('partner disconnected', ()=>{
     addMessage('server', "Stranger has disconnected. You can connect with a new partner!")
     showNewChatButton()
-    //TODO: button to start new chat
    })
 
-  /*
   
+   function getInterests(partnerUniqueIdentifier) {
+    const url = 'https://' + document.domain + ':' + location.port + "/interests?query=" + partnerUniqueIdentifier
+    fetch(url)
+    .then(response => response.json())  
+    .then(json => {
+        console.log(json);
+        //document.getElementById("partner-interests").innerHTML = JSON.stringify(json)
+    })
+}
 
-  
-  */
       window.onbeforeunload = function () {
       socket.emit('client disconnecting', {'room':curr_room});
     }
