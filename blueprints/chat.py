@@ -61,7 +61,7 @@ def pairIfPossible(data, methods=['GET', 'POST']):
         room_id = str(uuid.uuid4())
         join_room(room_id)
         queue.append((data['username'], room_id))
-
+        emit("store room", {'room_id': room_id}, room=room_id)
     print(queue_map)
 
 

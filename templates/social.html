@@ -165,6 +165,9 @@ $(function() {
      console.log(curr_room)
    })
 
+   socket.on('store room', (data)=>{
+    Cookies.set('curr_room', data['room_id'])
+   })
   
    /* Partner Disconnected Event */
    socket.on('partner disconnected', ()=>{
