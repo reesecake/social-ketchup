@@ -9,7 +9,12 @@ from api import socketio
 
 chatBlueprint = Blueprint("chat", __name__)
 
-queue = deque([])
+queue_map = {
+    'general': deque([]),
+    'oregonstate.edu': deque([]),
+    'iu.edu': deque([]),
+    'ucdavis.edu': deque([])
+}
 
 
 @chatBlueprint.route("/chat")
@@ -31,20 +36,21 @@ def message(data, methods=['GET', 'POST']):
 @socketio.on('pair me')
 def pairIfPossible(data, methods=['GET', 'POST']):
     # data = json.loads(data)
+    queue = queue_map.get(data['org_name'], queue_map['general'])
     if queue:
         # we found a match
         waiting_user, room_id = queue.popleft()
         # Todo - waiting_user != data['username'] --> enqueue again
         join_room(room_id)
         info = {'p1': waiting_user, 'p2': data['username'], 'room_id': room_id}
-        emit('introduction', info, room=room_id, json=True)
+        emit('introduction', info, room=room_id, json = True)
     else:
         # keep user in waiting queue
         room_id = str(uuid.uuid4())
         join_room(room_id)
         queue.append((data['username'], room_id))
 
-    print(queue)
+    print(queue_map)
 
 
 @socketio.on('client disconnecting')
