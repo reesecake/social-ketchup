@@ -1,3 +1,5 @@
+from uuid import uuid1
+
 from flask import Blueprint, redirect, url_for, render_template, flash
 from flask_login import current_user, logout_user, login_user
 
@@ -21,6 +23,7 @@ def signup():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)  # hashes the given password
+        user.id = str(uuid1())
         user.save()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('index'))
@@ -42,7 +45,7 @@ def login():
         user = User.objects(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
-            return redirect(url_for('login'))
+            return redirect(url_for('authentication.login'))
 
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('home'))

@@ -1,3 +1,5 @@
+from uuid import uuid1
+
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user
 
@@ -17,6 +19,7 @@ def index():
     if registration_form.validate_on_submit():
         user = User(username=registration_form.username.data, email=registration_form.email.data)
         user.set_password(registration_form.password.data)  # hashes the given password
+        user.id = str(uuid1())
         user.save()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('authentication.login'))
@@ -27,7 +30,7 @@ def index():
         user = User.objects(username=login_form.username.data).first()
         if user is None or not user.check_password(login_form.password.data):
             flash('Invalid username or password')
-            return redirect(url_for('login'))
+            return redirect(url_for('authentication.login'))
 
         login_user(user, remember=login_form.remember_me.data)
         return redirect(url_for('home'))

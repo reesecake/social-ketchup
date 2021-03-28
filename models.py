@@ -10,7 +10,7 @@ from api import login
 
 @login.user_loader
 def load_user(id_):
-    return User.objects(id=ObjectId(id_)).first()
+    return User.objects(id=id_).first()
 
 
 class User(UserMixin, Document):

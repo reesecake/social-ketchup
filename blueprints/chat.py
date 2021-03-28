@@ -7,18 +7,18 @@ from flask_socketio import emit, join_room, close_room
 
 from api import socketio
 
-chatController = Blueprint("chat", __name__)
+chatBlueprint = Blueprint("chat", __name__)
 
 queue = deque([])
 
 
-@chatController.route("/chat")
+@chatBlueprint.route("/chat")
 def render_chat():
     if current_user.is_anonymous:
         flash('You need to be logged in to chat.')
         return redirect(url_for('index'))
 
-    return render_template('social.html')
+    return render_template('social.html', username=current_user.username)
 
 
 @socketio.on('message')

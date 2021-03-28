@@ -17,11 +17,11 @@ socketio = SocketIO(app)
 
 from app import routes
 from blueprints.authentication import authenticationController
-from blueprints.chat import chatController
+from blueprints.chat import chatBlueprint
 import models
 
 app.register_blueprint(authenticationController)
-app.register_blueprint(chatController)
+app.register_blueprint(chatBlueprint)
 
 
 ## Same user enqueued problem -- email matching? 
