@@ -72,7 +72,8 @@ def disconnect_details(data):
     emit('partner disconnected', room=room_id, include_self=False)
     close_room(room_id)
     queue = queue_map.get(data['org_name'], queue_map['general'])
-    queue.popleft()
+    if queue:
+        queue.popleft()
 
 
 @socketio.on('disconnect')
