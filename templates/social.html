@@ -155,7 +155,7 @@ $(function() {
      console.log(data)
      p1 = data['p1']
      p2 = data['p2']
-     partner = username == p1? p2 : p1
+     partner = "{{username}}" == p1? p2 : p1
      addMessage('server', "Connected to " + partner + "!! Say Hello!")
      curr_room = data['room_id']
      console.log(curr_room)
