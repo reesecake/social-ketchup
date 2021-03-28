@@ -1,5 +1,12 @@
 <link rel="stylesheet" href="{{ '../config.py'.basedir }}/static/css/navbar.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+  function disconnect(){
+    var socket = io.connect('https://' + document.domain);
+    socket.emit('client disconnecting', {'room':Cookies.get('curr_room'), 'org_name':'stanford.edu'});
 
+  }
+</script>
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="{{ url_for('index')}}">

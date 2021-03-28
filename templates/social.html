@@ -159,6 +159,7 @@ $(function() {
      partner = "{{username}}" == p1? p2 : p1
      addMessage('server', "Connected to " + partner + "!! Say Hello!")
      curr_room = data['room_id']
+     Cookies.set('curr_room', curr_room)
      console.log(curr_room)
    })
 
