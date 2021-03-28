@@ -16,7 +16,7 @@ bootstrap = Bootstrap(app)
 
 from flask_socketio import SocketIO
 
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", ping_timeout=30, ping_interval=4, engineio_logger = True)
 
 from app import routes
 from blueprints.authentication import authenticationController
