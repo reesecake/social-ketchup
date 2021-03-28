@@ -76,11 +76,11 @@ $(function() {
 
   function conectToNewChat(){
     document.getElementById('chat-log').innerHTML = ''
-    socket.emit('pair me', {'username': 'Raj', 'org_name':'stanford.edu'})
+    socket.emit('pair me', {'username': "{{ username }}", 'org_name':'stanford.edu' })
   }
 
   function addMessage(self, message){
-    
+
     if (self =='you') $('#chat-log').append($('<li>').text( you + $('#message').val()));
     if (self == 'stranger') $('#chat-log').append($('<li>').text( stranger + message));
     if (self == 'server') $('#chat-log').append($('<li>').text( message));
@@ -135,7 +135,7 @@ $(function() {
 
   /* Send socket connection is made */
    socket.on( 'connect', function() {
-     socket.emit( 'pair me', {'username': 'Satya', 'org_name':'stanford.edu'})
+     socket.emit( 'pair me', {'username': "{{ username }}", 'org_name':'stanford.edu' } )
    })
 
 
