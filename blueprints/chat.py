@@ -68,6 +68,7 @@ def pairIfPossible(data, methods=['GET', 'POST']):
 @socketio.on('client disconnecting')
 def disconnect_details(data):
     print(data)
+    print("Test")
     room_id = data['room']
     emit('partner disconnected', room=room_id, include_self=False)
     close_room(room_id)
