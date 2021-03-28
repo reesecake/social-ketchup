@@ -76,7 +76,7 @@ $(function() {
 
   function conectToNewChat(){
     document.getElementById('chat-log').innerHTML = ''
-    socket.emit('pair me', {'username': 'Raj'})
+    socket.emit('pair me', {'username': "{{ username }}" })
   }
 
   function addMessage(self, message){
@@ -124,7 +124,7 @@ $(function() {
 
   /* Send socket connection is made */
    socket.on( 'connect', function() {
-     socket.emit( 'pair me', {'username': 'Satya'})
+     socket.emit( 'pair me', {'username': "{{ username }}" } )
    })
 
 
