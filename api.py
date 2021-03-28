@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -36,4 +38,4 @@ app.register_blueprint(chatBlueprint)
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, port=int(os.environ.get('PORT', '5000')))
