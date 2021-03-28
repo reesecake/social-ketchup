@@ -55,7 +55,7 @@ def pairIfPossible(data, methods=['GET', 'POST']):
         # Todo - waiting_user != data['username'] --> enqueue again
         join_room(room_id)
         info = {'p1': waiting_user, 'p2': data['username'], 'room_id': room_id}
-        emit('introduction', info, room=room_id, json = True)
+        emit('introduction', info, room=room_id)
     else:
         # keep user in waiting queue
         room_id = str(uuid.uuid4())
