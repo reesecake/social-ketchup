@@ -127,7 +127,7 @@ $(function() {
   /* Next button click event */
   next.addEventListener('click', (e)=>{
     e.preventDefault()
-    socket.emit('client disconnecting', {'room':curr_room});
+    socket.emit('client disconnecting', {'room':curr_room, 'org_name':'stanford.edu'});
     conectToNewChat()
 
   })
