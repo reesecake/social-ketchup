@@ -71,7 +71,7 @@ $(function() {
   const next = document.getElementById('nextBtn')
   var curr_room = null
   text.focus()
-  var connectionString = "ws://social-ketchup.herokuapp.com/socket.io/?EIO=4&transport=websocket"
+  var connectionString = "wss://social-ketchup.herokuapp.com/socket.io/?EIO=4&transport=websocket"
   var socket = io.connect(connectionString); // 'http://' + document.domain + ':' + location.port
 
 
