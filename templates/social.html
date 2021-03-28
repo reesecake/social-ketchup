@@ -76,13 +76,16 @@ $(function() {
 
   function conectToNewChat(){
     document.getElementById('chat-log').innerHTML = ''
-    socket.emit('pair me', {'username': 'Raj'})
+    socket.emit('pair me', {'username': 'Raj', 'org_name':'stanford.edu'})
   }
 
   function addMessage(self, message){
+    
     if (self =='you') $('#chat-log').append($('<li>').text( you + $('#message').val()));
     if (self == 'stranger') $('#chat-log').append($('<li>').text( stranger + message));
     if (self == 'server') $('#chat-log').append($('<li>').text( message));
+    var objDiv = document.getElementById("chat-log");
+    objDiv.scrollTop = objDiv.scrollHeight;
   }
 
 
@@ -100,6 +103,13 @@ $(function() {
   send.addEventListener('click',(e)=>{
     e.preventDefault()
     message = document.getElementById('message').value
+    message = message.trim()
+
+    if(message.length == 0){
+      console.log("emptyy!!")
+      alert('Hey, you cannot send an empty message!')
+      return
+    }
     send.setAttribute('disabled','disabled')
     addMessage('you', message)
     const payload = {'room':curr_room, 'message':message}
@@ -116,6 +126,7 @@ $(function() {
   /* Next button click event */
   next.addEventListener('click', (e)=>{
     e.preventDefault()
+    socket.emit('client disconnecting', {'room':curr_room});
     conectToNewChat()
 
   })
@@ -124,7 +135,7 @@ $(function() {
 
   /* Send socket connection is made */
    socket.on( 'connect', function() {
-     socket.emit( 'pair me', {'username': 'Satya'})
+     socket.emit( 'pair me', {'username': 'Satya', 'org_name':'stanford.edu'})
    })
 
 

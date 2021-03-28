@@ -24,11 +24,22 @@ import models
 app.register_blueprint(authenticationController)
 
 
-queue = deque([])
+queue_map = {
+    'general':deque([]),
+    'oregonstate.edu':deque([]),
+    'iu.edu': deque([]),
+    'ucdavis.edu':deque([])
+}
 
+## Todo: Same user enqueued problem -- email matching? 
+## Todo(DONE): empty message being sent -- bugfix
+## Todo(DONE): scrollable div with autoscroll to bottom
 
-## Same user enqueued problem -- email matching? 
-## Next functionality
+## Todo: Add specific university support
+
+## Reese is -- adding auth for chat route
+## Todo: give unique identities to clients
+## Making the scorlling look normal
 
 
 @app.route("/chat")
@@ -47,6 +58,7 @@ def message(data, methods=['GET', 'POST']):
 @socketio.on('pair me')
 def pairIfPossible(data, methods=['GET', 'POST']):
     #data = json.loads(data)
+    queue = queue_map.get(data['org_name'], queue_map['general'])
     if queue:
         #we found a match
         waiting_user, room_id = queue.popleft()
@@ -60,7 +72,7 @@ def pairIfPossible(data, methods=['GET', 'POST']):
         join_room(room_id)
         queue.append((data['username'],room_id))
     
-    print(queue)
+    print(queue_map)
 
 
 @socketio.on('client disconnecting')
