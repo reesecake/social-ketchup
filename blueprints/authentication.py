@@ -4,7 +4,7 @@ from flask_login import current_user, logout_user, login_user
 from app.forms import RegistrationForm, LoginForm
 from models import User
 
-authenticationController = Blueprint("authenticationController", __name__)
+authenticationController = Blueprint("authentication", __name__)
 
 
 @authenticationController.route("/signup", methods=['GET', 'POST'])
@@ -45,7 +45,7 @@ def login():
             return redirect(url_for('login'))
 
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
 
     return render_template('login.html', form=form)
 

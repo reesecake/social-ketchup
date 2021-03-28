@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
     <h1>{% block title %} Welcome to Social Ketchup {% endblock %}</h1>
-    <p> Hello World </p>
+
+    <div class="row">
+        <div class="card">
+            <div class="card-container">
+                {% with form=LoginForm %}
+                    {{ wtf.quick_form(form) }}
+                {% endwith %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-container">
+                {% with form=RegistrationForm %}
+                    {{ wtf.quick_form(form) }}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+
+{#    <script>#}
+{#        const flipCardContainer = document.querySelector(".flip-card-container");#}
+{#        flipCardContainer.addEventListener("click", function() {#}
+{#           flipCardContainer.classList.toggle("flip");#}
+{#        });#}
+{#    </script>#}
 
 {% endblock %}

@@ -1,25 +1,182 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 
-</head>
 
-<body>
-
-</body>
+{% block content %}
+    <link rel="stylesheet" href="../static/css/chat.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
-    <script type="text/javascript">
-      var socket = io.connect('http://' + document.domain + ':' + location.port);
-      socket.on( 'connect', function() {
-       socket.emit( 'my event', {
-         data: 'User Connected'
-       } )
-     } )
-    </script>
+    <title>{% block title %}Social Ketchup{% endblock %}</title>
 
-</html>
+{#  <div class = "container">#}
+{##}
+{#    <div class = "leftpane"></div>#}
+{#    <div class="middlepane" style="overflow-y: scroll; height:500px;">#}
+{#      <div id="chat-log"></div>#}
+{#      <form action="" id="message-form">#}
+{#            <span>#}
+{#            <button id="nextBtn" type="button" style="cursor: pointer;">Next</button>#}
+{#            <span id='input-span'><input class = 'inputbox' id="message" autocomplete="off" type="text" placeholder="Type here..." required/></span>#}
+{#            <button id="sendBtn" type="submit" style="cursor: pointer;">Send</button>#}
+{#            </span>#}
+{#      </form>#}
+{#    </div>#}
+{#    <div class = "rightpane"></div>#}
+{#  </div>#}
+    <style>
+        .form button:hover,.form button:active,.form button:focus {
+            background: #43A047;
+        }
+    </style>
+    <div class="row" style="padding-top:10px;" >
+        <div class="col"><hr></div>
+        <div class="col-auto"><p class="h3" align="center">Chatting</p></div>
+        <div class="col"><hr></div>
+    </div>
+
+    <div class="container">
+        <div id="chat-log" class="overflow-auto msgs"></div>
+        <form action="" id="message-form">
+            <button id="nextBtn" class="btn btn-primary" type="button" style="cursor: pointer;">Next</button>
+            <span id='input-span'>
+                <input type="text" class="form-control" autocomplete="off" placeholder="Type here..." aria-label="Message" id="message">
+            </span>
+            <button id="sendBtn" class="btn btn-success" type="submit" style="cursor: pointer;">Send</button>
+        </form>
+    </div>
+
+<script type="text/javascript">
+
+//Bugs -- Empty message -- No scroll -- No autoscroll
+
+$(function() {
+    $(window).bind('beforeunload', function() {
+        setTimeout(function() {
+            setTimeout(function() {
+            }, 1000);
+        },1);
+        return 'are you sure';
+    });
+}); 
+
+
+  const you = "You: "
+  const stranger = "Stranger: "
+
+  var form = document.getElementById("message-form");
+  const send = document.getElementById('sendBtn')
+  const text = document.getElementById('message')
+  const chats = document.getElementById('chat-log')
+  const next = document.getElementById('nextBtn')
+  var curr_room = null
+  text.focus()
+  var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+
+  function conectToNewChat(){
+    document.getElementById('chat-log').innerHTML = ''
+    socket.emit('pair me', {'username': 'Raj', 'org_name':'stanford.edu'})
+  }
+
+  function addMessage(self, message){
+    
+    if (self =='you') $('#chat-log').append($('<li>').text( you + $('#message').val()));
+    if (self == 'stranger') $('#chat-log').append($('<li>').text( stranger + message));
+    if (self == 'server') $('#chat-log').append($('<li>').text( message));
+    var objDiv = document.getElementById("chat-log");
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }
+
+
+  function showNewChatButton(){
+    var btn = document.createElement("BUTTON");
+    btn.innerHTML = 'Start New Chat'
+    btn.style = "cursor: pointer;"
+    chats.appendChild(btn)
+    btn.addEventListener('click', (e)=>{
+      conectToNewChat()
+    })
+  }
+
+  /* Send button click event */
+  send.addEventListener('click',(e)=>{
+    e.preventDefault()
+    message = document.getElementById('message').value
+    message = message.trim()
+
+    if(message.length == 0){
+      console.log("emptyy!!")
+      alert('Hey, you cannot send an empty message!')
+      return
+    }
+    send.setAttribute('disabled','disabled')
+    addMessage('you', message)
+    const payload = {'room':curr_room, 'message':message}
+    console.log(payload)
+    socket.emit('message', payload, ()=>{
+        send.removeAttribute('disabled')
+        text.value = ''
+        text.focus()
+    })
+    console.log("Message sent: ", message)
+  })
+
+
+  /* Next button click event */
+  next.addEventListener('click', (e)=>{
+    e.preventDefault()
+    socket.emit('client disconnecting', {'room':curr_room});
+    conectToNewChat()
+
+  })
+
+
+
+  /* Send socket connection is made */
+   socket.on( 'connect', function() {
+     socket.emit( 'pair me', {'username': 'Satya', 'org_name':'stanford.edu'})
+   })
+
+
+
+   /* When 'message' arrives */
+   socket.on('message', (message)=>{
+    addMessage('stranger', message)
+     console.log("received message:", message)
+   })
+
+
+
+
+   /* 'introduction' when paired with new user */
+   socket.on('introduction',(data)=>{
+     //TODO: compare with self and render partner name
+     console.log(data)
+     addMessage('server', "Connected to a New Partner!!")
+     curr_room = data['room_id']
+     console.log(curr_room)
+   })
+
+  
+   /* Partner Disconnected Event */
+   socket.on('partner disconnected', ()=>{
+    addMessage('server', "Stranger has disconnected. You can connect with a new partner!")
+    showNewChatButton()
+    //TODO: button to start new chat
+   })
+
+  /*
+  
+
+  
+  */
+      window.onbeforeunload = function () {
+      socket.emit('client disconnecting', {'room':curr_room});
+    }
+  </script>
+
+
+
+
+{% endblock %}
