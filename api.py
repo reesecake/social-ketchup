@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_mongoengine import MongoEngine
 
 from config import Config
@@ -33,6 +33,10 @@ queue = deque([])
 
 @app.route("/chat")
 def render_chat():
+    if current_user.is_anonymous:
+        flash('You need to be logged in to chat.')
+        return redirect(url_for('index'))
+
     return render_template('social.html')
 
 
