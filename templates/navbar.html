@@ -1,35 +1,37 @@
+<link rel="stylesheet" href="{{ '../config.py'.basedir }}/static/css/navbar.css">
+
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('index')}}">
-            Social Ketchup
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <a class="navbar-brand" href="{{ url_for('index')}}">
+        Social Ketchup
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-          <ul class="navbar-nav">
-              <li class="nav-item">
-                  <a class="nav-link" href="#">About</a>
-              </li>
-          </ul>
+    <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+      <ul class="navbar-nav">
+          <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+          </li>
+      </ul>
 
-          <ul class="nav navbar-nav ml-auto">
-                {% if current_user.is_anonymous %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('authentication.login') }}">Login</a></li>
-                {% else %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ current_user.avatar(32) }}" alt="user img">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('authentication.logout') }}">Logout</a></li>
-                        </ul>
-                    </li>
-                {% endif %}
-          </ul>
+      <ul class="nav navbar-nav ml-auto">
+        {% if current_user.is_anonymous %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('authentication.login') }}">Login</a></li>
+        {% else %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ current_user.avatar(32) }}" alt="user img">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('authentication.logout') }}">Logout</a></li>
+                </ul>
+            </li>
+        {% endif %}
+      </ul>
 
-        </div>
+    </div>
   </div>
 </nav>
