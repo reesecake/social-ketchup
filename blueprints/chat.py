@@ -9,6 +9,14 @@ from api import socketio
 
 chatBlueprint = Blueprint("chat", __name__)
 
+#todo: center the "go" button
+#todo: fix the scroll view
+#todo: interests
+
+
+#todo: deploy problem -- maybe https?
+#todo: user left in queue when he/she were waiting and decide to logout/disconnect
+
 queue_map = {
     'general': deque([]),
     'oregonstate.edu': deque([]),
@@ -37,7 +45,11 @@ def message(data, methods=['GET', 'POST']):
 def pairIfPossible(data, methods=['GET', 'POST']):
     # data = json.loads(data)
     queue = queue_map.get(data['org_name'], queue_map['general'])
-    if queue:
+    
+    if queue and queue[0][0] == current_user.username:
+        print(queue[0][0], current_user.username)
+        return redirect(url_for('home'))
+    elif queue:
         # we found a match
         waiting_user, room_id = queue.popleft()
         # Todo - waiting_user != data['username'] --> enqueue again
@@ -64,3 +76,4 @@ def disconnect_details(data):
 @socketio.on('disconnect')
 def test_disconnect():
     print("Client has disconnected!")
+
