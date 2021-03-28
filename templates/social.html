@@ -71,7 +71,7 @@ $(function() {
   const next = document.getElementById('nextBtn')
   var curr_room = null
   text.focus()
-  var socket = io.connect('http://' + document.domain + ':' + location.port);
+  var socket = io.connect('https://' + document.domain );
 
 
   function conectToNewChat(){
