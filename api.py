@@ -34,8 +34,7 @@ queue_map = {
 ## Todo: Same user enqueued problem -- email matching? 
 ## Todo(DONE): empty message being sent -- bugfix
 ## Todo(DONE): scrollable div with autoscroll to bottom
-
-## Todo: Add specific university support
+## Todo(DONE): Add specific university support
 
 ## Reese is -- adding auth for chat route
 ## Todo: give unique identities to clients
