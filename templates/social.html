@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../static/css/chat.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
-    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
     <title>{% block title %}Social Ketchup{% endblock %}</title>
 
@@ -77,6 +76,25 @@ $(function() {
   var socket = io.connect('https://' + document.domain); // 'http://' + document.domain + ':' + location.port
 
 
+  function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
   function conectToNewChat(){
     document.getElementById('chat-log').innerHTML = ''
     socket.emit('pair me', {'username': "{{ username }}", 'org_name':'stanford.edu' })
@@ -161,12 +179,12 @@ $(function() {
      partner = "{{username}}" == p1? p2 : p1
      addMessage('server', "Connected to " + partner + "!! Say Hello!")
      curr_room = data['room_id']
-     Cookies.set('curr_room', curr_room)
+     setCookie('curr_room', data['room_id'], 1)
      console.log(curr_room)
    })
 
    socket.on('store room', (data)=>{
-    Cookies.set('curr_room', data['room_id'])
+    setCookie('curr_room', data['room_id'], 1)
    })
   
    /* Partner Disconnected Event */
